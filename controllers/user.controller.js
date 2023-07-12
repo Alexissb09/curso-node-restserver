@@ -2,14 +2,12 @@ import { response, request } from "express"; // Solo para que vscode sepa que es
 
 export const getUser = (req = request, res = response) => {
   // query params
-  const { q, name, page = "1" } = req.query;
+  const { name } = req.query;
 
   res.status(200).json({
     ok: true,
     message: "get API",
     name,
-    q,
-    page,
   });
 };
 
