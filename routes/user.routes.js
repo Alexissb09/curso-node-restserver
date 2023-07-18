@@ -2,6 +2,9 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 import { validateFields } from "../middlewares/validateFields.js";
+import { validateJWT } from "../middlewares/validateJWT.js";
+import { isAdminRole, haveRole } from "../middlewares/validateRoles.js";
+
 import { isValidRole, emailExist, userExist } from "../helpers/dbValidators.js";
 
 import {
@@ -22,6 +25,9 @@ router.put(
     check("id", "The ID is not valid").isMongoId(),
     check("id").custom(userExist),
     check("role").custom(isValidRole),
+    check("password", "The password must have more than 6 characters").isLength(
+      { min: 6 }
+    ),
     validateFields,
   ],
   putUser
@@ -45,8 +51,12 @@ router.post(
 router.delete(
   "/:id",
   [
+    validateJWT,
+    isAdminRole,
+    haveRole("ADMIN_ROLE"),
     check("id", "The ID is not valid").isMongoId(),
     check("id").custom(userExist),
+    validateFields,
   ],
   deleteUser
 );
