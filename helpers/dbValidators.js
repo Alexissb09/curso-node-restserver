@@ -1,3 +1,5 @@
+import { Category } from "../models/category.js";
+import { Product } from "../models/product.js";
 import { Role } from "../models/role.js";
 import { User } from "../models/user.js";
 
@@ -22,5 +24,21 @@ export const userExist = async (id) => {
 
   if (!userFound) {
     throw new Error(`The id ${id} does not exist`);
+  }
+};
+
+export const categoryExist = async (id) => {
+  const categoryFound = Category.findById(id);
+
+  if (!categoryFound) {
+    throw new Error(`The category with id ${id} is not registered on DB`);
+  }
+};
+
+export const productExist = async (id) => {
+  const productFound = await Product.findById(id);
+
+  if (!productFound) {
+    throw new Error(`The product with id ${id} is not registered in DB`);
   }
 };

@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 
 // Middleware para validar los campos
+// Captura los errores, si no hay next
 
 export const validateFields = (req, res, next) => {
   const errors = validationResult(req);
