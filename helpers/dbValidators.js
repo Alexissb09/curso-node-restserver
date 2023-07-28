@@ -42,3 +42,14 @@ export const productExist = async (id) => {
     throw new Error(`The product with id ${id} is not registered in DB`);
   }
 };
+
+export const collectionsAllowed = async (c = "", collections = []) => {
+  const isAllowed = collections.includes(c);
+
+  if (!isAllowed) {
+    throw new Error(
+      `The collection ${c} is not allowed, must be: ${collections}`
+    );
+  }
+  return true;
+};

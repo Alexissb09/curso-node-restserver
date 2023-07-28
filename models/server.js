@@ -7,6 +7,8 @@ import { authRouter } from "../routes/auth.routes.js";
 import { categoriesRouter } from "../routes/categories.routes.js";
 import { productsRouter } from "../routes/products.routes.js";
 import { searchRouter } from "../routes/search.routes.js";
+import { uploadsRouter } from "../routes/uploads.routes.js";
+import fileUpload from "express-fileupload";
 
 export default class Server {
   constructor() {
@@ -19,6 +21,7 @@ export default class Server {
       search: "/api/search",
       products: "/api/products",
       users: "/api/users",
+      uploads: "/api/uploads",
     };
 
     // Database
@@ -44,6 +47,15 @@ export default class Server {
 
     // Directorio publico
     this.app.use(express.static("public"));
+
+    // Express file upload
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/tmp/",
+        createParentPath: true,
+      })
+    );
   }
 
   routes() {
@@ -51,6 +63,7 @@ export default class Server {
     this.app.use(this.paths.categories, categoriesRouter);
     this.app.use(this.paths.search, searchRouter);
     this.app.use(this.paths.products, productsRouter);
+    this.app.use(this.paths.uploads, uploadsRouter);
     this.app.use(this.paths.users, router);
   }
 
